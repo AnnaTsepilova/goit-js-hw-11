@@ -1,5 +1,6 @@
 import './css/styles.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 // Notify.failure('Oops, there is no country with that name');
 // Notify.info('Too many matches found. Please enter a more specific name.');
 import fetchCountries from './js/fetchCountries.js';
