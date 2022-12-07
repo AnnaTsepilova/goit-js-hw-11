@@ -52,7 +52,7 @@ img {
 }
 
 .wrapper {
-  background-color: rgb(0, 190, 190);
+  background-color: rgba(0, 190, 190, 0.85);
   margin-bottom: 30px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
   z-index: 1;
@@ -79,24 +79,42 @@ img {
   border: 2px solid rgb(0, 140, 140);
 }
 
-.search-btn {
-
+.btn {
   justify-content: center;
   min-width: 100px;
   height: 35px;
+  margin: 15px 0 15px 0;
+
   text-align: center;
-  border-radius: 4px;
-  border-width: 0;
-  color: rgb(1, 140, 140);
-  background-color: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
   font-family: inherit;
   font-weight: 700;
   font-size: 16px;
   line-height: 1.88;
   letter-spacing: .06em;
-  cursor: pointer;
+
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
   outline: rgba(0, 0, 0, 0);
+
+  cursor: pointer;  
+}
+
+.search-btn {
+  color: rgb(1, 140, 140);
+  background-color: #ffffff;  
+}
+
+.load-more {
+  display: flex;
+  width: 120px;
+  margin: 20px auto;
+  color: #ffffff;
+  background-color: rgba(1, 140, 140, 0.85);
+}
+
+.is-hidden {
+  display: none;
 }
 
 .sticky {
@@ -124,10 +142,6 @@ img {
     0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
   border-radius: 4px;
 }
-
-/* .gallery__image:hover {
-  transform: scale(1.03);
-} */
 
 .gallery__image {
   height: 100%;
