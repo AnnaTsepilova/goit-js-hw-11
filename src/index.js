@@ -1,104 +1,68 @@
 import './css/styles.css';
+import 'simplelightbox/dist/simple-lightbox.min.css'
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-// Notify.failure('Oops, there is no country with that name');
-// Notify.info('Too many matches found. Please enter a more specific name.');
+// Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+// Notify.success('Hooray! We found 500 images.');
+import SimpleLightbox from "simplelightbox";
+import fetchImages from './js/fetchImages.js';
 
-import fetchCountries from './js/fetchCountries.js';
+const inputRef = document.querySelector('.search-form input');
+const renderBtn = document.querySelector('.search-form button');
+const renderGallery = document.querySelector('.gallery');
 
-import debounce from 'lodash.debounce';
-
-
-
-
-
-/*
-const DEBOUNCE_DELAY = 300;
-const LIMIT_ITEMS = 10;
-
-const inputRef = document.querySelector('#search-box');
-const renderList = document.querySelector('.country__list');
-
-inputRef.addEventListener('input', debounce(inputSearch, DEBOUNCE_DELAY));
+renderBtn.addEventListener('click', inputSearch);
 
 function inputSearch(e) {
     e.preventDefault();
 
-    const searchQuery = inputRef.value.trim().toLowerCase();
+    const searchQuery = inputRef.value.toLowerCase();
     if (!searchQuery) {
         cleanOutput();
         return;
     }
 
-    fetchCountries(searchQuery)
-        .then(country => {
-            // additional filter of API results
-            country = country.filter(country => {
-                return country.name.common.toLowerCase().includes(searchQuery) ? country : false;
-            })
+    fetchImages(searchQuery)
+        .then(images => {
+            Notify.success(`Hooray! We found ${images.totalHits} images.`);
+            renderGallery.innerHTML = renderGalleryOfSearchingImages(images);
 
-            if (country.length > LIMIT_ITEMS) {
-                cleanOutput();
-                Notify.info('Too many matches found. Please enter a more specific name.');
-            }
-
-            if (country.length > 1 && country.length < LIMIT_ITEMS) {
-                
-                renderList.innerHTML = renderListOfSearchingCountries(country);
-            }
-
-            if (country.length === 1) {
-                
-                renderList.innerHTML = renderCountryFullCard(country);
-            }    
+            new SimpleLightbox('.gallery a');
         })
-        .catch(onFetchError); 
+        .catch(onFetchError);
 }
 
-function renderListOfSearchingCountries(countries) {
-    return countries.map(({ flags: {svg: flagSvg}, name: {common: nameCommon} }) => {
-        return `
-            <li class="country__item">
-                <img class="country__flag country__flag-small" src="${flagSvg}" alt="Flag of ${nameCommon}" />
-                <p class="country__name">${nameCommon}</p>
-            </li>`   
-    })
-    .join('');
-}
-
-function renderCountryFullCard(country) {
-    return country.map((
-        {
-            flags: { svg: flagSvg },
-            name: { common: nameCommon },
-            capital,
-            population,
-            languages
-        }) => {
-        let langsArray = [];
-        for (const lang in languages) {
-            langsArray.push(languages[lang]);
-        }
-
-        let lang = langsArray.join(', ');
-        return `
-            <div class="country__name--wrapper">
-                <img class="country__flag country__flag-big" src="${flagSvg}" alt="Flag of ${nameCommon}" />
-                <h1>${nameCommon}</h1>
+function renderGalleryOfSearchingImages(images) {
+    return images.hits.map((image) => {
+        return `            
+            <div class="photo-card gallery__item">
+                <a class="gallery__link" href="${image.largeImageURL}">
+                    <img class="gallery__image" src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
+                    <div class="info">
+                        <p class="info-item">
+                        <b>Likes</b> ${image.likes}
+                        </p>
+                        <p class="info-item">
+                        <b>Views</b> ${image.views}
+                        </p>
+                        <p class="info-item">
+                        <b>Comments</b> ${image.comments}
+                        </p>
+                        <p class="info-item">
+                        <b>Downloads</b> ${image.downloads}
+                        </p>
+                    </div>
+                </a>
             </div>
-            <p class="country__descr"><span class="country__text-bold">Capital:</span> ${capital}</p>
-            <p class="country__descr"><span class="country__text-bold">Population:</span> ${population}</p>
-            <p class="country__descr"><span class="country__text-bold">Languages:</span> ${lang}</p>`   
+            `   
     })
     .join('');
 }
-
 
 function onFetchError(error) {
     cleanOutput();
-    Notify.failure('Oops, there is no country with that name');
+    Notify.failure('Sorry, there are no images matching your search query. Please try again.');
 }
 
 function cleanOutput() {
-    renderList.innerHTML = '';
+    renderGallery.innerHTML = '';
 }
-*/
