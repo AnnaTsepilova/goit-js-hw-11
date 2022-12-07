@@ -35,6 +35,7 @@ async function onSearch(e) {
 
     try {
         const images = await fetchImages(searchQuery);
+        toggleLoadMoreBtn(images);
         if (images.totalHits === 0) {
             Notify.failure('Sorry, there are no images matching your search query. Please try again.', notifyOptions);
             cleanOutput();
@@ -45,8 +46,6 @@ async function onSearch(e) {
         galleryContainer.innerHTML = renderGalleryOfSearchingImages(images);
         
         gallery.refresh();
-        
-        toggleLoadMoreBtn(images);
         
     } catch (error) {
         onFetchError(error)
